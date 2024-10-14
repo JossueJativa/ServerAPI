@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "556333518989",
+    "project_id": "seguridad-278d6",
+    "storage_bucket": "seguridad-278d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556333518989:android:69e6cc3f0520c20d0652c4",
+        "android_client_info": {
+          "package_name": "com.example.app_user_controller"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSOaL4LpCXFmFwdV_ysI6aqr7Rh_kThlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
