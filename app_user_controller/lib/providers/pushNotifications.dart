@@ -42,8 +42,7 @@ class PushNotification {
       'your channel name',
       importance: Importance.max,
       priority: Priority.high,
-      icon:
-          '@mipmap/ic_launcher',
+      icon: '@mipmap/ic_launcher',
     );
 
     const NotificationDetails platformChannelSpecifics =
