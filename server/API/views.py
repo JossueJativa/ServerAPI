@@ -92,6 +92,8 @@ class UserViewSet(viewsets.ModelViewSet):
                     'is_login': True,
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
+                    'token_phone': user.token_phone,
+                    'id': user.id
                 }, status=200)
 
         return Response({'detail': 'Invalid credentials'}, status=404)

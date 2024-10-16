@@ -24,9 +24,27 @@ Future<bool> authCallback(username, password) async {
     final Map<String, dynamic> responseData = json.decode(response.body);
     String accessToken = responseData['access'];
     String refreshToken = responseData['refresh'];
+    String tokenPhone = await getTokenPhone();
+    String TokenPhoneUser = responseData['token_phone'];
+    int userId = responseData['id'];
 
     await prefs.setString('accessToken', accessToken);
     await prefs.setString('refreshToken', refreshToken);
+
+    if (tokenPhone != TokenPhoneUser) {
+      final Map<String, dynamic> body = {
+        'token_phone': tokenPhone,
+      };
+
+      final response = await http.patch(
+        Uri.parse(jsonAuth['url'] + '/user/' + userId.toString() + '/'),
+        body: body
+      );
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+    }
     return true;
   } else {
     return false;

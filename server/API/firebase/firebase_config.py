@@ -4,7 +4,7 @@ from firebase_admin import credentials, messaging
 
 # Ruta al archivo JSON con las credenciales
 cred = credentials.Certificate(
-    os.path.join(os.path.dirname(__file__), "seguridad-278d6-firebase-adminsdk-2j729-08e3824c2e.json")
+    os.path.join(os.path.dirname(__file__), "seguridad-278d6-firebase-adminsdk-2j729-632aed8d9d.json")
 )
 
 # Inicializa la app de Firebase
