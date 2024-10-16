@@ -34,61 +34,64 @@ class _HousePageState extends State<HousePage> {
                 Expanded(
                   child: Input(
                     text: 'Enviar mensaje',
-                    controller: messageController, 
+                    controller: messageController,
                     obscureText: false,
                   ),
                 ),
                 IconButton(
                   onPressed: () async {
                     final bool response = await sendMessage(
-                      widget.houseId,
-                      messageController.text
-                    );
+                        widget.houseId, messageController.text);
 
                     if (response) {
                       setState(() {
                         isAdded = response;
                       });
                     }
-                    
+
                     if (isAdded) {
                       Infomessage(
-                        message: isAdded ? 'Se realizo el envió' : 'Ha habido un error', 
-                        color: isAdded ? Colors.green : Colors.red, 
-                        textColor: Colors.white, 
-                        icon: isAdded ? Icons.done : Icons.warning, 
-                        size: 20
-                      ).show(context);
+                              message: isAdded
+                                  ? 'Se realizo el envió'
+                                  : 'Ha habido un error',
+                              color: isAdded ? Colors.green : Colors.red,
+                              textColor: Colors.white,
+                              icon: isAdded ? Icons.done : Icons.warning,
+                              size: 20)
+                          .show(context);
                     } else {
                       Infomessage(
-                        message: 'Ha habido un error', 
-                        color: Colors.red, 
-                        textColor: Colors.white, 
-                        icon: Icons.warning, 
-                        size: 20
-                      ).show(context);
+                              message: 'Ha habido un error',
+                              color: Colors.red,
+                              textColor: Colors.white,
+                              icon: Icons.warning,
+                              size: 20)
+                          .show(context);
                     }
-                  }, 
+                  },
                   icon: const Icon(Icons.add),
                 ),
               ],
             ),
             IconButton(
-              onPressed: () async{
-                final response = await helpAction(widget.houseId);
+                onPressed: () async {
+                  final response = await helpAction(widget.houseId);
 
-                if (response) {
-                  Infomessage(
-                    message: 'Se realizo la acción de ayuda', 
-                    color: Colors.green, 
-                    textColor: Colors.white, 
-                    icon: Icons.done, 
-                    size: 20
-                  ).show(context);
-                }
-              }, 
-              icon: const Icon(Icons.security_update_warning, size: 100, color: Colors.red,)
-            )
+                  if (response) {
+                    Infomessage(
+                            message: 'Se realizo la acción de ayuda',
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            icon: Icons.done,
+                            size: 20)
+                        .show(context);
+                  }
+                },
+                icon: const Icon(
+                  Icons.security_update_warning,
+                  size: 100,
+                  color: Colors.red,
+                ))
           ],
         ),
       ),

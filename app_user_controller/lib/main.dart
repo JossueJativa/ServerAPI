@@ -9,7 +9,7 @@ import 'package:app_user_controller/pages/housePage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
   PushNotification pushNotification = PushNotification();
   await pushNotification.initNotifications();
 
@@ -28,8 +28,8 @@ class MainApp extends StatelessWidget {
         '/register': (context) => const RegisterPage(),
         '/home': (context) => const HomePage(),
         '/house': (context) => HousePage(
-          houseId: ModalRoute.of(context)!.settings.arguments as int,
-        ),
+              houseId: ModalRoute.of(context)!.settings.arguments as int,
+            ),
       },
       initialRoute: '/',
     );

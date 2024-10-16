@@ -37,9 +37,8 @@ Future<bool> authCallback(username, password) async {
       };
 
       final response = await http.patch(
-        Uri.parse(jsonAuth['url'] + '/user/' + userId.toString() + '/'),
-        body: body
-      );
+          Uri.parse(jsonAuth['url'] + '/user/' + userId.toString() + '/'),
+          body: body);
 
       if (response.statusCode != 200) {
         return false;

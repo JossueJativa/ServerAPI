@@ -5,7 +5,7 @@ import 'package:app_user_controller/functions/authCallback.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({ super.key });
+  const RegisterPage({super.key});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -15,7 +15,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   bool isLoading = false;
 
   @override
@@ -31,28 +32,23 @@ class _RegisterPageState extends State<RegisterPage> {
               controller: usernameController,
               obscureText: false,
             ),
-
             Input(
               text: 'Email',
               controller: emailController,
               obscureText: false,
             ),
-
             Input(
               text: 'Contraseña',
               controller: passwordController,
               obscureText: true,
             ),
-
             Input(
               text: 'Confirmar contraseña',
               controller: confirmPasswordController,
               obscureText: true,
             ),
-
             Button(
-              onPress:
-              () async {
+              onPress: () async {
                 List<String> texts = [
                   usernameController.text,
                   emailController.text,
@@ -82,7 +78,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   return;
                 }
 
-                if (!emailController.text.contains('@') || !emailController.text.contains('.')) {
+                if (!emailController.text.contains('@') ||
+                    !emailController.text.contains('.')) {
                   Infomessage(
                     message: 'Por favor, introduzca un email válido',
                     color: Colors.red,

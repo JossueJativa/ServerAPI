@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _tokenController = TextEditingController();
   final TextEditingController _panicBtn = TextEditingController();
   final TextEditingController _areaData = TextEditingController();
-  
+
   bool isDone = false;
   List<dynamic> homes = [];
 
@@ -119,8 +119,7 @@ class _HomePageState extends State<HomePage> {
                               });
                             },
                           ),
-                          if (isWithData)
-                            const SizedBox(height: 10),
+                          if (isWithData) const SizedBox(height: 10),
                           const Text(
                             'Por favor, llene todos los campos',
                             style: TextStyle(color: Colors.red),
@@ -146,7 +145,6 @@ class _HomePageState extends State<HomePage> {
               }
             },
           ),
-
           Expanded(
             child: homes.isNotEmpty
                 ? ListView.builder(
@@ -155,12 +153,15 @@ class _HomePageState extends State<HomePage> {
                       final home = homes[index];
                       return ListTile(
                         title: Text('Casa N°${index + 1}'),
-                        subtitle: Text('url: ${home['url']}\nArea: ${home['area']}'),
+                        subtitle:
+                            Text('url: ${home['url']}\nArea: ${home['area']}'),
                         trailing: home['is_deleted']
-                            ? const Icon(Icons.disabled_by_default_rounded, color: Colors.red)
+                            ? const Icon(Icons.disabled_by_default_rounded,
+                                color: Colors.red)
                             : const Icon(Icons.home, color: Colors.green),
                         onTap: () {
-                          Navigator.pushNamed(context, '/house', arguments: home['id']);
+                          Navigator.pushNamed(context, '/house',
+                              arguments: home['id']);
                         },
                       );
                     },

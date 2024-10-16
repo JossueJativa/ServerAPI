@@ -5,7 +5,6 @@ Future<bool> helpAction(int homeId) async {
   final Map<String, dynamic> jsonAuth = await loadAuthData();
   final String url = jsonAuth['url'] + '/area/HelpBtn/?home_id=$homeId';
 
-
   final response = await http.get(
     Uri.parse(url),
   );

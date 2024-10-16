@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<List<dynamic>> getHomes() async {
-  final Map<String,dynamic> data = await loadAuthData();
+  final Map<String, dynamic> data = await loadAuthData();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final token = prefs.getString('accessToken');
@@ -23,15 +23,15 @@ Future<List<dynamic>> getHomes() async {
   );
 
   if (response.statusCode == 200) {
-    final Map<String,dynamic> responseData = json.decode(response.body);
+    final Map<String, dynamic> responseData = json.decode(response.body);
     return responseData['home'];
   }
 
   return [];
 }
 
-Future<Map<String,dynamic>> getHome(int id) async {
-  final Map<String,dynamic> data = await loadAuthData();
+Future<Map<String, dynamic>> getHome(int id) async {
+  final Map<String, dynamic> data = await loadAuthData();
 
   final url = data['url'] + '/home/$id/';
   final response = await http.get(
@@ -39,14 +39,15 @@ Future<Map<String,dynamic>> getHome(int id) async {
   );
 
   if (response.statusCode == 200) {
-    final Map<String,dynamic> responseData = json.decode(response.body);
+    final Map<String, dynamic> responseData = json.decode(response.body);
     return responseData;
   }
 
   return {};
 }
 
-Future<bool> addNewHouse(String urlHA, String tokenHA, int area, String helpBtn) async {
+Future<bool> addNewHouse(
+    String urlHA, String tokenHA, int area, String helpBtn) async {
   final Map<String, dynamic> body = {
     'HomeAssistant_Url': urlHA,
     'HomeAssistant_Token': tokenHA,
@@ -54,8 +55,7 @@ Future<bool> addNewHouse(String urlHA, String tokenHA, int area, String helpBtn)
     'area': area.toInt(),
   };
 
-  final Map<String,dynamic> data = await loadAuthData();
-
+  final Map<String, dynamic> data = await loadAuthData();
 
   final url = data['url'] + '/home/';
   final response = await http.post(
@@ -77,7 +77,7 @@ Future<bool> addNewHouse(String urlHA, String tokenHA, int area, String helpBtn)
 }
 
 Future<bool> _addHomeToUser(int homeId) async {
-  final Map<String,dynamic> data = await loadAuthData();
+  final Map<String, dynamic> data = await loadAuthData();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final token = prefs.getString('accessToken');
@@ -111,7 +111,7 @@ Future<bool> _addHomeToUser(int homeId) async {
 Future<Map<int, String>> getAreas() async {
   Map<int, String> areas = {};
 
-  final Map<String,dynamic> data = await loadAuthData();
+  final Map<String, dynamic> data = await loadAuthData();
 
   final url = data['url'] + '/area/';
   final response = await http.get(
@@ -121,7 +121,7 @@ Future<Map<int, String>> getAreas() async {
   if (response.statusCode == 200) {
     final List<dynamic> responseData = json.decode(response.body);
     for (int i = 0; i < responseData.length; i++) {
-      areas[responseData[i]['id']] = responseData[i]['name']; 
+      areas[responseData[i]['id']] = responseData[i]['name'];
     }
     return areas;
   }
@@ -130,20 +130,15 @@ Future<Map<int, String>> getAreas() async {
 }
 
 Future<bool> sendMessage(int homeId, String message) async {
-  final Map<String,dynamic> data = await loadAuthData();
+  final Map<String, dynamic> data = await loadAuthData();
 
   final url = data['url'] + '/home/send_message/';
 
-  final response = await http.post(
-    Uri.parse(url),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: json.encode({
-      'homeId': homeId,
-      'message': message
-    })
-  );
+  final response = await http.post(Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'homeId': homeId, 'message': message}));
 
   if (response.statusCode == 200) {
     return true;

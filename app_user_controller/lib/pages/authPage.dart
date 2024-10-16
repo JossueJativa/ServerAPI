@@ -60,7 +60,6 @@ class _AuthPageState extends State<AuthPage> {
                           size: 20,
                         ).show(context);
                         Navigator.popAndPushNamed(context, '/home');
-                        
                       } else {
                         Infomessage(
                           message: 'Credenciales incorrectas',

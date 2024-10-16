@@ -8,7 +8,12 @@ class PopUpForm extends StatefulWidget {
   final VoidCallback onPress;
   final BuildContext context;
 
-  const PopUpForm({super.key, required this.title, required this.children, required this.onPress, required this.context});
+  const PopUpForm(
+      {super.key,
+      required this.title,
+      required this.children,
+      required this.onPress,
+      required this.context});
 
   @override
   State<PopUpForm> createState() => _PopUpFormState();
@@ -26,14 +31,14 @@ class _PopUpFormState extends State<PopUpForm> {
       actions: [
         Center(
           child: Button(
-            onPress: widget.onPress, 
-            text: 'Guardar', 
-            color: Colors.green, 
+            onPress: widget.onPress,
+            text: 'Guardar',
+            color: Colors.green,
             textColor: Colors.white,
           ),
         ),
         Link(
-          text: 'Cancelar', 
+          text: 'Cancelar',
           onPress: () {
             Navigator.of(context).pop();
           },
