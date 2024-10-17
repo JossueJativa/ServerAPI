@@ -52,14 +52,14 @@ class _HousePageState extends State<HousePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Casa ID ${widget.houseId}'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.popAndPushNamed(context, '/home');
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+        title: Text(_urlController.text),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.popAndPushNamed(context, '/home');
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
           IconButton(
             onPressed: () {
               _showEditPopup(context);
@@ -139,9 +139,9 @@ class _HousePageState extends State<HousePage> {
         ),
       ),
       bottomSheet: IconButton(
-          onPressed: () async{
+          onPressed: () async {
             final isDeleted = await deleteHouseLogic(widget.houseId);
-            if(isDeleted){
+            if (isDeleted) {
               Infomessage(
                 message: 'Casa eliminada correctamente',
                 color: Colors.green,
@@ -149,9 +149,9 @@ class _HousePageState extends State<HousePage> {
                 icon: Icons.check,
                 size: 20,
               ).show(context);
-              
+
               Navigator.popAndPushNamed(context, '/home');
-            }else{
+            } else {
               Infomessage(
                 message: 'Error al eliminar la casa',
                 color: Colors.red,
