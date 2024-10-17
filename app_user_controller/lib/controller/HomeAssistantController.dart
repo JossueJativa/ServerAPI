@@ -147,7 +147,8 @@ Future<bool> sendMessage(int homeId, String message) async {
   return false;
 }
 
-Future<bool> updateHouseDetails(int homeId, String url, String token, String panicBTN) async {
+Future<bool> updateHouseDetails(
+    int homeId, String url, String token, String panicBTN) async {
   final Map<String, dynamic> data = await loadAuthData();
 
   final url = data['url'] + '/home/$homeId/';
