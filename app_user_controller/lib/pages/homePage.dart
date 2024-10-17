@@ -2,6 +2,7 @@ import 'package:app_user_controller/common/infomessage.dart';
 import 'package:app_user_controller/common/input.dart';
 import 'package:app_user_controller/common/link.dart';
 import 'package:app_user_controller/common/popUpForm.dart';
+import 'package:app_user_controller/common/pupUpSelection.dart';
 import 'package:app_user_controller/common/selectBox.dart';
 import 'package:app_user_controller/controller/HomeAssistantController.dart';
 import 'package:app_user_controller/functions/authCallback.dart';
@@ -160,8 +161,78 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.red)
                             : const Icon(Icons.home, color: Colors.green),
                         onTap: () {
-                          Navigator.pushNamed(context, '/house',
-                              arguments: home['id']);
+                          if (home['is_deleted']) {
+                            Infomessage(
+                              message: 'Esta casa ha sido eliminada',
+                              color: Colors.red,
+                              textColor: Colors.white,
+                              icon: Icons.error,
+                              size: 20,
+                            ).show(context);
+
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return PupUpSelection(
+                                  title: '¿Desea eliminar esta casa?',
+                                  option1: 'Activar casa',
+                                  option2: 'Eliminar casa',
+                                  onPressYes: () async {
+                                    bool isDeleted =
+                                        await activateHouse(home['id']);
+                                    if (isDeleted) {
+                                      Infomessage(
+                                        message: 'Casa activada correctamente',
+                                        color: Colors.green,
+                                        textColor: Colors.white,
+                                        icon: Icons.check,
+                                        size: 20,
+                                      ).show(context);
+                                      setState(() {
+                                        _loadHomes();
+                                      });
+                                    } else {
+                                      Infomessage(
+                                        message: 'Error al activar la casa',
+                                        color: Colors.red,
+                                        textColor: Colors.white,
+                                        icon: Icons.error,
+                                        size: 20,
+                                      ).show(context);
+                                    }
+                                  },
+                                  onPressNo: () async {
+                                    final deleteHousePermanent =
+                                        await deleteHouse(home['id']);
+
+                                    if (deleteHousePermanent) {
+                                      Infomessage(
+                                        message: 'Casa eliminada permanentemente',
+                                        color: Colors.green,
+                                        textColor: Colors.white,
+                                        icon: Icons.check,
+                                        size: 20,
+                                      ).show(context);
+                                      setState(() {
+                                        _loadHomes();
+                                      });
+                                    } else {
+                                      Infomessage(
+                                        message: 'Error al eliminar la casa',
+                                        color: Colors.red,
+                                        textColor: Colors.white,
+                                        icon: Icons.error,
+                                        size: 20,
+                                      ).show(context);
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            Navigator.popAndPushNamed(context, '/house',
+                                arguments: home['id']);
+                          }
                         },
                       );
                     },

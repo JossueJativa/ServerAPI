@@ -104,7 +104,7 @@ class AreaViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(
         manual_parameters=[
-            openapi.Parameter('home_id', openapi.IN_QUERY, description="Optional area number", type=openapi.TYPE_INTEGER)
+            openapi.Parameter('home_id', openapi.IN_QUERY, description="Requiere home ID number", type=openapi.TYPE_INTEGER)
         ]
     )
     @action(detail=False, methods=['get'])
@@ -174,6 +174,33 @@ class Home_UserViewSet(viewsets.ModelViewSet):
 
         serializer = Home_UserSerializer(home_user, many=True)
         return Response(serializer.data)
+    
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('user', openapi.IN_QUERY, description="Optional user number", type=openapi.TYPE_INTEGER),
+            openapi.Parameter('home', openapi.IN_QUERY, description="Optional home number", type=openapi.TYPE_INTEGER)
+        ]
+    )
+    def destroy(self, request, *args, **kwargs):
+        user_id = request.query_params.get('user')
+        home_id = request.query_params.get('home')
+
+        if user_id is not None and home_id is not None:
+            user_id = int(user_id)
+            home_id = int(home_id)
+            user = User.objects.get(pk=user_id)
+            home = Home.objects.get(pk=home_id)
+
+            home_user = Home_User.objects.get(user=user, home=home)
+            home_user.delete()
+
+            return Response({
+                'info': 'home_user deleted'
+            }, status=200)
+        else:
+            return Response({
+                'info': 'user and home are required'
+            }, status=400)
 
 class SecurityViewSet(viewsets.ModelViewSet):
     queryset = Security.objects.all()

@@ -146,3 +146,108 @@ Future<bool> sendMessage(int homeId, String message) async {
 
   return false;
 }
+
+Future<bool> updateHouseDetails(int homeId, String url, String token, String panicBTN) async {
+  final Map<String, dynamic> data = await loadAuthData();
+
+  final url = data['url'] + '/home/$homeId/';
+
+  final response = await http.patch(Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'homeId': homeId,
+        'HomeAssistant_Url': url,
+        'HomeAssistant_Token': token,
+        'help_btn': panicBTN,
+      }));
+
+  if (response.statusCode == 200) {
+    return true;
+  }
+
+  return false;
+}
+
+Future<bool> deleteHouseLogic(int homeId) async {
+  final Map<String, dynamic> data = await loadAuthData();
+
+  final url = data['url'] + '/home/$homeId/';
+
+  final response = await http.patch(
+    Uri.parse(url),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: json.encode({'is_deleted': true}),
+  );
+
+  if (response.statusCode == 200) {
+    return true;
+  }
+
+  return false;
+}
+
+Future<bool> activateHouse(int homeId) async {
+  final Map<String, dynamic> data = await loadAuthData();
+
+  final url = data['url'] + '/home/$homeId/';
+
+  final response = await http.patch(
+    Uri.parse(url),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: json.encode({'is_deleted': false}),
+  );
+
+  if (response.statusCode == 200) {
+    return true;
+  }
+
+  return false;
+}
+
+Future<bool> deleteHouse(int homeId) async {
+  final Map<String, dynamic> data = await loadAuthData();
+
+  final url = data['url'] + '/home/$homeId/';
+
+  final response = await http.delete(
+    Uri.parse(url),
+  );
+
+  if (response.statusCode == 204) {
+    deleteUserHouse(homeId);
+    return true;
+  }
+
+  return false;
+}
+
+Future<bool> deleteUserHouse(int homeId) async {
+  final Map<String, dynamic> data = await loadAuthData();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  final token = prefs.getString('accessToken');
+
+  final List<String> tokenParts = token!.split('.');
+  final String payload = tokenParts[1];
+  final String normalizedPayload = base64Url.normalize(payload);
+  final String payloadMap = utf8.decode(base64Url.decode(normalizedPayload));
+  final Map<String, dynamic> payloadData = json.decode(payloadMap);
+  final int userId = payloadData['user_id'];
+
+  final url = data['url'] + '/home_user/?home=$homeId&user=$userId';
+  final response = await http.delete(
+    Uri.parse(url),
+  );
+
+  if (response.statusCode == 204) {
+    return true;
+  }
+
+  return false;
+}
