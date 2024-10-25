@@ -24,8 +24,8 @@ class Security(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     N_home = models.IntegerField()
-    url_home = models.CharField(max_length=255, null=True)
-    token_home = models.CharField(max_length=255, null=True)
+    url_home = models.CharField(max_length=255)
+    token_home = models.CharField(max_length=255)
 
 class Security_Area(models.Model):
     security = models.ForeignKey(Security, on_delete=models.CASCADE)
@@ -86,6 +86,8 @@ Modelos según la conexión
 |   name               |                     |
 |   address            |                     |
 |   N_home             |                     |
+|   url_home           |                     |
+|   token_home         |                     |
 ----------------------------------------------
 
 ----------------------------------------------

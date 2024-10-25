@@ -1,3 +1,4 @@
 /env/
 /.vscode/
 /server/API/firebase/*.json
+/server/db.sqlite3
