@@ -124,9 +124,7 @@ class AreaViewSet(viewsets.ModelViewSet):
                 for sec in security:
                     sec = Security.objects.get(pk=sec.security.id)
                     url = sec.url_home + '/api/services/notify/persistent_notification'
-                    print(url)
                     token = sec.token_home
-                    print(token)
 
                     headers = {
                         "Authorization": f"Bearer {token}",
