@@ -118,26 +118,20 @@ class AreaViewSet(viewsets.ModelViewSet):
             home_area = Home.objects.get(pk=home.home.id)
             area = Area.objects.get(pk=home_area.area.id)
 
-            # Filtrar los homes en el área
             homes = Home.objects.filter(area=area)
 
             try:
-                # Obtener las instancias de seguridad seleccionadas
                 security_areas = Security_Area.objects.filter(area=area, is_selected=True)
                 
-                # Ejecutar en paralelo las solicitudes HTTP y las notificaciones FCM
                 with ThreadPoolExecutor() as executor:
-                    # Crear una lista de tareas para enviar notificaciones a servicios de seguridad
                     security_futures = [
                         executor.submit(send_security_notification, sec.security.id, home_id) for sec in security_areas
                     ]
 
-                    # Crear una lista de tareas para enviar notificaciones FCM a usuarios de la zona
                     fcm_futures = [
                         executor.submit(send_fcm_notification, home.id, home_id) for home in homes
                     ]
 
-                    # Esperar a que se completen todas las tareas y capturar excepciones si ocurren
                     for future in as_completed(security_futures + fcm_futures):
                         try:
                             future.result()
