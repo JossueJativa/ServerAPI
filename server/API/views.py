@@ -121,6 +121,7 @@ class AreaViewSet(viewsets.ModelViewSet):
 
             try:
                 security = Security_Area.objects.filter(area=area)
+                security = [sec for sec in security if sec.is_selected == True]
                 for sec in security:
                     sec = Security.objects.get(pk=sec.security.id)
                     url = sec.url_home + '/api/services/notify/persistent_notification'
