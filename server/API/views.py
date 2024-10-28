@@ -119,6 +119,33 @@ class AreaViewSet(viewsets.ModelViewSet):
 
             homes = Home.objects.filter(area=area)
 
+            try:
+                security = Security_Area.objects.filter(area=area)
+                for sec in security:
+                    sec = Security.objects.get(pk=sec.security.id)
+                    url = sec.url_home + '/api/services/notify/notify'
+                    token = sec.token_home
+
+                    headers = {
+                        "Authorization": f"Bearer {token}",
+                        "Content-Type": "application/json"
+                    }
+                    data = {
+                        'message': f'Home {home_id} needs help',
+                        'title': 'Help Button {home_id}'
+                    }
+
+                    requests.post(
+                        url,
+                        headers=headers,
+                        data=json.dumps(data)
+                    )
+            except:
+                return Response({
+                    'info': 'message is sent to all users in the area'
+                }, status=200)
+                    
+
             for home in homes:
                 home = Home_User.objects.get(pk=home.id)
                 user = User.objects.get(pk=home.user.id)
