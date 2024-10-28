@@ -123,8 +123,10 @@ class AreaViewSet(viewsets.ModelViewSet):
                 security = Security_Area.objects.filter(area=area)
                 for sec in security:
                     sec = Security.objects.get(pk=sec.security.id)
-                    url = sec.url_home + '/api/services/notify/notify'
+                    url = sec.url_home + '/api/services/notify/persistent_notification'
+                    print(url)
                     token = sec.token_home
+                    print(token)
 
                     headers = {
                         "Authorization": f"Bearer {token}",
@@ -132,7 +134,7 @@ class AreaViewSet(viewsets.ModelViewSet):
                     }
                     data = {
                         'message': f'Home {home_id} needs help',
-                        'title': 'Help Button {home_id}'
+                        'title': f'Help Button {home_id}'
                     }
 
                     requests.post(
