@@ -1,6 +1,7 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 
-from .firebase.firebase_config import send_fcm_message
+from .firebase.firebase_config import send_fcm_notification, send_security_notification
 from .serializer import *
 from .models import *
 import requests
@@ -117,46 +118,42 @@ class AreaViewSet(viewsets.ModelViewSet):
             home_area = Home.objects.get(pk=home.home.id)
             area = Area.objects.get(pk=home_area.area.id)
 
+            # Filtrar los homes en el área
             homes = Home.objects.filter(area=area)
 
             try:
-                security = Security_Area.objects.filter(area=area)
-                security = [sec for sec in security if sec.is_selected == True]
-                for sec in security:
-                    sec = Security.objects.get(pk=sec.security.id)
-                    url = sec.url_home + '/api/services/notify/persistent_notification'
-                    token = sec.token_home
+                # Obtener las instancias de seguridad seleccionadas
+                security_areas = Security_Area.objects.filter(area=area, is_selected=True)
+                
+                # Ejecutar en paralelo las solicitudes HTTP y las notificaciones FCM
+                with ThreadPoolExecutor() as executor:
+                    # Crear una lista de tareas para enviar notificaciones a servicios de seguridad
+                    security_futures = [
+                        executor.submit(send_security_notification, sec.security.id, home_id) for sec in security_areas
+                    ]
 
-                    headers = {
-                        "Authorization": f"Bearer {token}",
-                        "Content-Type": "application/json"
-                    }
-                    data = {
-                        'message': f'Home {home_id} needs help',
-                        'title': f'Help Button {home_id}'
-                    }
+                    # Crear una lista de tareas para enviar notificaciones FCM a usuarios de la zona
+                    fcm_futures = [
+                        executor.submit(send_fcm_notification, home.id, home_id) for home in homes
+                    ]
 
-                    requests.post(
-                        url,
-                        headers=headers,
-                        data=json.dumps(data)
-                    )
-            except:
+                    # Esperar a que se completen todas las tareas y capturar excepciones si ocurren
+                    for future in as_completed(security_futures + fcm_futures):
+                        try:
+                            future.result()
+                        except Exception as e:
+                            print(f"Error en la tarea: {e}")
+
                 return Response({
                     'info': 'message is sent to all users in the area'
                 }, status=200)
-                    
 
-            for home in homes:
-                home = Home_User.objects.get(pk=home.id)
-                user = User.objects.get(pk=home.user.id)
-                token_fcm = user.token_phone
+            except Exception as e:
+                print(f"Error en el proceso: {e}")
+                return Response({
+                    'info': 'An error occurred while sending messages'
+                }, status=500)
 
-                send_fcm_message(token_fcm, 'Help Button', f'Home {home_id} needs help')
-
-            return Response({
-                'info': 'message is sent to all users in the area'
-            }, status=200)
         else:
             return Response({
                 'info': 'home_id is required'
