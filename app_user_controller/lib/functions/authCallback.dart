@@ -111,7 +111,6 @@ Future<bool> refreshAccessToken() async {
 void removeTokens() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove("accessToken");
-  prefs.remove("refreshToken");
 }
 
 // Ejemplo de uso
