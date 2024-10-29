@@ -6,7 +6,6 @@ Future<String> getTokenPhone() async {
 
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     String? token = await messaging.getToken();
-    print(token);
     return token!;
   } else {
     return '';
