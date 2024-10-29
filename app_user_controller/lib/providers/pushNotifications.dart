@@ -42,7 +42,7 @@ class PushNotification {
       'channel_id',
       'your channel name',
       importance: Importance.max,
-      priority: Priority.high,
+      priority: Priority.max,
       icon: '@mipmap/ic_launcher',
       playSound: true,
       enableVibration: true,
