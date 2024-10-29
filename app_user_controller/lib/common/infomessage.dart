@@ -16,28 +16,30 @@ class Infomessage {
   });
 
   void show(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(
-              icon,
-              size: size,
-              color: textColor,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              message,
-              style: TextStyle(
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                icon,
+                size: size,
                 color: textColor,
-                fontSize: size * 0.75,
               ),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Text(
+                message,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: size * 0.75,
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: color,
+          duration: const Duration(seconds: 3),
         ),
-        backgroundColor: color,
-        duration: const Duration(seconds: 3),
-      ),
-    );
+      );
+    });
   }
 }
