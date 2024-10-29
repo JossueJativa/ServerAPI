@@ -5,8 +5,8 @@ Future<String> getTokenPhone() async {
   NotificationSettings settings = await messaging.requestPermission();
 
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    // Obtener el token de FCM
     String? token = await messaging.getToken();
+    print(token);
     return token!;
   } else {
     return '';
