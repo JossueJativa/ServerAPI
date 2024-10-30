@@ -38,7 +38,8 @@ def send_security_notification(security_id, home_id):
     }
     data = {
         'message': f'Home {home_id} needs help',
-        'title': f'Help Button {home_id}'
+        'title': f'Help Button {home_id}',
+        'priority': 'high'
     }
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
