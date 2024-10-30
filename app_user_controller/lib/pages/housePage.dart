@@ -118,17 +118,7 @@ class _HousePageState extends State<HousePage> {
             ),
             IconButton(
                 onPressed: () async {
-                  final response = await helpAction(widget.houseId);
-
-                  if (response) {
-                    Infomessage(
-                            message: 'Se realizó la acción de ayuda',
-                            color: Colors.green,
-                            textColor: Colors.white,
-                            icon: Icons.done,
-                            size: 20)
-                        .show(context);
-                  }
+                  await helpAction(widget.houseId);
                 },
                 icon: const Icon(
                   Icons.security_update_warning,

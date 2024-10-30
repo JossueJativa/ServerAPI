@@ -39,8 +39,8 @@ class PushNotification {
   Future<void> _showNotification(RemoteMessage message) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'important_messages',
-      'Important Messages',
+      'alarm_channel',
+      'Alarm Notifications',
       importance: Importance.max,
       priority: Priority.max,
       icon: '@mipmap/ic_launcher',
