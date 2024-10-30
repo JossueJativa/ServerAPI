@@ -1,5 +1,6 @@
 import 'package:app_user_controller/providers/pushNotifications.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:app_user_controller/pages/authPage.dart';
 import 'package:app_user_controller/pages/registerPage.dart';
@@ -12,6 +13,16 @@ void main() async {
 
   PushNotification pushNotification = PushNotification();
   await pushNotification.initNotifications();
+
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 
   runApp(const MainApp());
 }
