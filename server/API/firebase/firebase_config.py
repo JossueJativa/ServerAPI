@@ -29,7 +29,7 @@ def send_fcm_message(token, title, body):
 
 def send_security_notification(security_id, home_id):
     sec = Security.objects.get(pk=security_id)
-    url = sec.url_home + '/api/services/notify/persistent_notification'
+    url = f"{sec.url_home}/api/services/notify/persistent_notification"
     token = sec.token_home
     home_name = Home.objects.get(pk=home_id).name
 
@@ -39,11 +39,10 @@ def send_security_notification(security_id, home_id):
     }
     data = {
         'message': f'Home {home_name} needs help',
-        'title': f'Help Button {home_name}, con id {home_id}',
-        'priority': 'high'
+        'title': f'Help Button {home_name}, con id {home_id}'
     }
 
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response = requests.post(url, headers=headers, json=data)
     response.raise_for_status()
 
 def send_fcm_notification(home_user_id, home_id):

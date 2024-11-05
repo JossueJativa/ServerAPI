@@ -115,6 +115,7 @@ class AreaViewSet(viewsets.ModelViewSet):
         if home_id is not None:
             home_id = int(home_id)
             home = Home_User.objects.get(home=home_id)
+            home_user_id = home.id
             home_area = Home.objects.get(pk=home.home.id)
             area = Area.objects.get(pk=home_area.area.id)
 
@@ -129,7 +130,7 @@ class AreaViewSet(viewsets.ModelViewSet):
                     ]
 
                     fcm_futures = [
-                        executor.submit(send_fcm_notification, home.id, home_id) for home in homes
+                        executor.submit(send_fcm_notification, home_user_id, home.id) for home in homes
                     ]
 
                     for future in as_completed(security_futures + fcm_futures):
