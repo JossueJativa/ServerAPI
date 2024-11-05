@@ -46,6 +46,7 @@ Modelos según la conexión
 |   Home                                     |
 ----------------------------------------------
 |   id                 |  Primary Key        |
+|   name               |                     |
 |   HomeAssistant_Url  |                     |
 |   HomeAssistant_Token|                     |
 |   is_deleted         |                     | -> Borrado lógico
