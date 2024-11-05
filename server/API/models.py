@@ -10,11 +10,18 @@ class Area(models.Model):
     name = models.CharField(max_length=255)
 
 class Home(models.Model):
+    name = models.CharField(max_length=255, blank=True)
     HomeAssistant_Url = models.CharField(max_length=255)
     HomeAssistant_Token = models.CharField(max_length=255)
     is_deleted = models.BooleanField(default=False)
     help_btn = models.CharField(max_length=255)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            super(Home, self).save(*args, **kwargs)
+            self.name = f'Home {self.id}'
+        super(Home, self).save(*args, **kwargs)
 
 class Home_User(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE)

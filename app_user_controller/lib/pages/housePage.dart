@@ -19,10 +19,13 @@ class _HousePageState extends State<HousePage> {
   late TextEditingController _urlController;
   late TextEditingController _tokenController;
   late TextEditingController _panicBtnController;
+  late TextEditingController _nameController;
 
   @override
   void initState() {
     super.initState();
+
+    _nameController = TextEditingController();
     _urlController = TextEditingController();
     _tokenController = TextEditingController();
     _panicBtnController = TextEditingController();
@@ -33,6 +36,7 @@ class _HousePageState extends State<HousePage> {
   Future<void> _loadHouseDetails() async {
     final houseDetails = await getHome(widget.houseId);
     setState(() {
+      _nameController.text = houseDetails['name'];
       _urlController.text = houseDetails['HomeAssistant_Url'];
       _tokenController.text = houseDetails['HomeAssistant_Token'];
       _panicBtnController.text = houseDetails['help_btn'];
@@ -42,6 +46,7 @@ class _HousePageState extends State<HousePage> {
   @override
   void dispose() {
     messageController.dispose();
+    _nameController.dispose();
     _urlController.dispose();
     _tokenController.dispose();
     _panicBtnController.dispose();
@@ -58,7 +63,7 @@ class _HousePageState extends State<HousePage> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text(_urlController.text),
+        title: Text(_nameController.text),
         actions: [
           IconButton(
             onPressed: () {
@@ -168,17 +173,19 @@ class _HousePageState extends State<HousePage> {
             return PopUpForm(
               title: 'Editar información de la casa',
               onPress: () async {
+                final String name = _nameController.text;
                 final String url = _urlController.text;
                 final String token = _tokenController.text;
                 final String panicBtn = _panicBtnController.text;
 
                 if (url.isNotEmpty && token.isNotEmpty) {
                   bool isUpdated = await updateHouseDetails(
-                      widget.houseId, url, token, panicBtn);
+                      name, widget.houseId, url, token, panicBtn);
 
                   if (isUpdated) {
                     Navigator.pop(context);
                     setState(() {
+                      _nameController.clear();
                       _urlController.clear();
                       _tokenController.clear();
                       _panicBtnController.clear();
@@ -203,6 +210,11 @@ class _HousePageState extends State<HousePage> {
               },
               context: context,
               children: [
+                Input(
+                  text: 'Nombre',
+                  controller: _nameController,
+                  obscureText: false,
+                ),
                 Input(
                   text: 'URL',
                   controller: _urlController,

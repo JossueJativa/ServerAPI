@@ -179,6 +179,7 @@ class Home_UserViewSet(viewsets.ModelViewSet):
                 home = Home.objects.get(pk=home_user_instance.home.id)
                 home_data = {
                     'id': home.id,
+                    'name': home.name,
                     'url': home.HomeAssistant_Url,
                     'token': home.HomeAssistant_Token,
                     'is_deleted': home.is_deleted,

@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, messaging
 import requests
 
-from API.models import Security, Home_User, User
+from API.models import Home, Security, Home_User, User
 
 # Ruta al archivo JSON con las credenciales
 cred = credentials.Certificate(
@@ -31,14 +31,15 @@ def send_security_notification(security_id, home_id):
     sec = Security.objects.get(pk=security_id)
     url = sec.url_home + '/api/services/notify/persistent_notification'
     token = sec.token_home
+    home_name = Home.objects.get(pk=home_id).name
 
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
     data = {
-        'message': f'Home {home_id} needs help',
-        'title': f'Help Button {home_id}',
+        'message': f'Home {home_name} needs help',
+        'title': f'Help Button {home_name}, con id {home_id}',
         'priority': 'high'
     }
 
@@ -49,4 +50,5 @@ def send_fcm_notification(home_user_id, home_id):
     home_user = Home_User.objects.get(pk=home_user_id)
     user = User.objects.get(pk=home_user.user.id)
     token_fcm = user.token_phone
-    send_fcm_message(token_fcm, 'Help Button', f'Home {home_id} needs help')
+    home_name = Home.objects.get(pk=home_id).name
+    send_fcm_message(token_fcm, 'Help Button', f'Home {home_name} needs help')

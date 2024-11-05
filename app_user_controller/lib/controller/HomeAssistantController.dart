@@ -47,8 +47,9 @@ Future<Map<String, dynamic>> getHome(int id) async {
 }
 
 Future<bool> addNewHouse(
-    String urlHA, String tokenHA, int area, String helpBtn) async {
+    String name, String urlHA, String tokenHA, int area, String helpBtn) async {
   final Map<String, dynamic> body = {
+    'name': name,
     'HomeAssistant_Url': urlHA,
     'HomeAssistant_Token': tokenHA,
     'help_btn': helpBtn,
@@ -148,7 +149,7 @@ Future<bool> sendMessage(int homeId, String message) async {
 }
 
 Future<bool> updateHouseDetails(
-    int homeId, String url, String token, String panicBTN) async {
+    String name, int homeId, String url, String token, String panicBTN) async {
   final Map<String, dynamic> data = await loadAuthData();
 
   final url = data['url'] + '/home/$homeId/';
@@ -158,6 +159,7 @@ Future<bool> updateHouseDetails(
         'Content-Type': 'application/json',
       },
       body: json.encode({
+        'name': name,
         'homeId': homeId,
         'HomeAssistant_Url': url,
         'HomeAssistant_Token': token,

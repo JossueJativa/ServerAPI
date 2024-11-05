@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
   final TextEditingController _tokenController = TextEditingController();
   final TextEditingController _panicBtn = TextEditingController();
@@ -67,6 +68,7 @@ class _HomePageState extends State<HomePage> {
                       return PopUpForm(
                         title: 'Ingresar nuevo Home Assistant',
                         onPress: () async {
+                          final String name = _nameController.text;
                           final String url = _urlController.text;
                           final String token = _tokenController.text;
                           final String area = _areaData.text;
@@ -74,12 +76,13 @@ class _HomePageState extends State<HomePage> {
 
                           if (url.isNotEmpty && token.isNotEmpty) {
                             bool isAdded = await addNewHouse(
-                                url, token, int.parse(area), panicBtn);
+                                name, url, token, int.parse(area), panicBtn);
 
                             if (isAdded) {
                               Navigator.pop(context);
 
                               setState(() {
+                                _nameController.clear();
                                 _urlController.clear();
                                 _tokenController.clear();
                                 _areaData.clear();
@@ -97,6 +100,11 @@ class _HomePageState extends State<HomePage> {
                         },
                         context: context,
                         children: [
+                          Input(
+                            text: 'Nombre de la casa',
+                            controller: _nameController,
+                            obscureText: false,
+                          ),
                           Input(
                             text: 'URL*',
                             controller: _urlController,
@@ -153,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       final home = homes[index];
                       return ListTile(
-                        title: Text('Casa N°${index + 1}'),
+                        title: Text('${home['name']}'),
                         subtitle:
                             Text('url: ${home['url']}\nArea: ${home['area']}'),
                         trailing: home['is_deleted']
